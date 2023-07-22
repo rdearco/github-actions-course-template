@@ -1,62 +1,47 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: CI for Infrastructure
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches:
+    - '*'
 
 jobs:
-  build:
+    code-check:
+      name: Terraform Validation and Build
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Configure AWS Credentials Action For GitHub Actions
+          uses: aws-actions/configure-aws-credentials@v2
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-west-1 
+        - name: Setup Terraform CLI
+          uses: hashicorp/setup-terraform@v2.0.2
+    
+        - name: Terraform init, plan and apply
+        
+          env:
+            IS_PR: ${{ github.EVENT_NAME == 'pull_request' }}
+          run: |
+            echo `pwd`
+            echo "tfpath ${{ github.event.inputs.tfpath }}"
+            echo "** Running Terraform Init**"
+            #terraform init
+            
+            echo "REF: ${{ github.GITHUB_HEAD_REF }}"
+            echo "REF NAME: ${{ github.GITHUB_REF }}"
+    
+            # echo "** Running Terraform Validate**"
+            # terraform validate
+  
+            # echo "** Running Terraform Plan**"
+            # terraform plan
+            
+            BRANCH_NAME="${GITHUB_HEAD_REF}"
 
-    runs-on: ubuntu-latest
+            echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-        os: [ubuntu-latest] #, windows-2016
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: npm install and build webpack w/${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm install -g serverless aws-sdk
-    - run: |
-        serverless -v
-        aws help
-    - run: npm ci
-    - run: npm run build --if-present
-    - uses: actions/upload-artifact@master
-      with:
-        name: webpack artifacts
-        path: public/
-
-  test:
-
-    runs-on: ubuntu-latest
-    needs: build
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        os: [ubuntu-latest]
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/download-artifact@master
-      with:
-        name: webpack artifacts
-        path: public
-    - name: npm test w/${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    #- run: npm install
-    - run: npm test
+        - name: "Another step uses branch name"
+          run: echo "Branch name is ${{ env.BRANCH_NAME }}"
