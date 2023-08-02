@@ -62,8 +62,11 @@ jobs:
         cache-dependency-path: ./client/package-lock.json
     - name: Run test
       run: |
+        echo "*** Get list of current directory ***"
         ls -l
-        ls -l public
+        
+        #echo "*** Get list of current directory ***"
+        #ls -l public
         #ls -l public2
         #npm ci
         #npm run build --if-present
