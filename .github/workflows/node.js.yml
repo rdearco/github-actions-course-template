@@ -8,13 +8,10 @@ on: [push]
   #   branches: [ "master" ]
   # pull_request:
   #   branches: [ "master" ]
-
-env:
-  WORKING_DIRECTORY: ./client/
   
 defaults:
   run:
-    working-directory: ${{ env.WORKING_DIRECTORY }}
+    working-directory: ./client/
 
 jobs:
   build:
@@ -56,7 +53,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: client build dev
-        path: ${{ github.workspace }}/${{ env.WORKING_DIRECTORY }}
+        path: ${{ github.workspace }}
     - name: npm test  w/${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -68,8 +65,6 @@ jobs:
         echo ${{ github.workspace }}
         
         echo $GITHUB_WORKSPACE
-        
-        echo ${{ defaults.run.working-directory }}
         
         pwd
         
