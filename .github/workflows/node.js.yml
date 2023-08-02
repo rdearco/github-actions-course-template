@@ -72,6 +72,9 @@ jobs:
         echo "*** Get list of current directory ***"
         ls -l
         
+        echo "*** Context ***"
+        echo ${{ toJson(github) }}
+        
         #echo "*** Get list of current directory ***"
         #ls -l public
         #ls -l public2
