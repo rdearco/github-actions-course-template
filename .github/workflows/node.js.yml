@@ -72,12 +72,13 @@ jobs:
         echo "*** Get list of current directory ***"
         ls -l
         
-        echo "*** Context ***"
-        echo ${{ toJson(github) }}
-        
         #echo "*** Get list of current directory ***"
         #ls -l public
         #ls -l public2
         #npm ci
         #npm run build --if-present
         #npm test
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
