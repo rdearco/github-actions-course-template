@@ -53,7 +53,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: client build dev
-        path: build
+        path: ./build
     - name: npm test  w/${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
