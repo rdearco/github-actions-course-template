@@ -63,6 +63,9 @@ jobs:
     - name: Run test
       run: |
         echo ${{ github.workspace }}
+        
+        echo $GITHUB_WORKSPACE
+        
         echo "*** Get list of prev directory ***"
         ls -l ../
 
