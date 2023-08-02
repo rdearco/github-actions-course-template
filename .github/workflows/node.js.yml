@@ -35,7 +35,7 @@ jobs:
     - run: npm run build --if-present
     - uses: actions/upload-artifact@v3
       with:
-        name: client build
+        name: client build dev
         path: client/build
 
   test:
