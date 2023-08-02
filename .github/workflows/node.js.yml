@@ -62,6 +62,9 @@ jobs:
         cache-dependency-path: ./client/package-lock.json
     - name: Run test
       run: |
+        echo "*** Get list of prev directory ***"
+        ls -l ../
+
         echo "*** Get list of current directory ***"
         ls -l
         
