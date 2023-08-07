@@ -11,7 +11,8 @@ on:
 
 jobs:
   build:
-    uses: github-actions-course-template/tree/master/.github/workflows/build.yml@latest
+    name: Build code
+    uses: ./.github/workflows/build.yml
 
     # runs-on: ubuntu-latest
 
