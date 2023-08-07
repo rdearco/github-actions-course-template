@@ -57,7 +57,11 @@ jobs:
     - name: Run test
       shell: bash
       run: |
-        echo "HELLO"
+        regions=('us-west-1' 'us-east-1')
+        
+        for t in ${regions[@]}; do
+          echo "./pipeline --threads $t"
+        done
       # run: |
       #   ls -l public
       #   ls -l build
